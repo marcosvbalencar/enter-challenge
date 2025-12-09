@@ -5,7 +5,6 @@ Pure Python deterministic logic for portfolio rebalancing.
 No LLM calls - strict rule-based decisions.
 
 CRITICAL: Uses MONTHLY returns from CSV, NOT all-time returns from portfolio text.
-This matches the Rivet project logic in Code node WT26iGyowKpGcmFs5DXDa.
 """
 
 from loguru import logger
@@ -93,7 +92,7 @@ def _apply_security_rules(
     CRITICAL: Uses MONTHLY returns from CSV (monthly_returns_map),
     not all-time returns from the portfolio text.
     
-    This matches the Rivet project logic where:
+    Examples:
     - LREN3 with +8.9% monthly return = HOLD (not HARD_SELL)
     - MRFG3 with -16.4% monthly return = may trigger SOFT_SELL
     """
@@ -149,7 +148,7 @@ def _evaluate_asset(
     if house_view == "Bearish" and return_pct < rules.soft_sell.threshold:
         return "SOFT_SELL", rules.soft_sell.size_pct, rules.soft_sell.rationale
     
-    return "HOLD", 0.0, "Posicao dentro dos parametros. Manter alocacao atual."
+    return "HOLD", 0.0, "Position within parameters. Keep current allocation."
 
 
 def _build_summary(
@@ -164,7 +163,7 @@ def _build_summary(
     actionable = [a for a in actions if a.action != "HOLD"]
     
     if not actionable:
-        summary = "Nenhuma acao de rebalanceamento necessaria no momento."
+        summary = "No rebalancing actions needed at the moment."
     else:
         action_counts: dict[str, int] = {}
         for a in actionable:
@@ -172,19 +171,19 @@ def _build_summary(
         
         parts = []
         if "HARD_SELL" in action_counts:
-            parts.append(f"{action_counts['HARD_SELL']} venda(s) urgente(s)")
+            parts.append(f"{action_counts['HARD_SELL']} urgent sell(s)")
         if "SOFT_SELL" in action_counts:
-            parts.append(f"{action_counts['SOFT_SELL']} reducao(oes) por cenario macro")
+            parts.append(f"{action_counts['SOFT_SELL']} macro scenario reduction(s)")
         if "TRIM" in action_counts:
-            parts.append(f"{action_counts['TRIM']} realizacao(oes) de lucro")
+            parts.append(f"{action_counts['TRIM']} profit realization(s)")
         
-        summary = f"Rebalanceamento recomendado: {', '.join(parts)}. "
-        summary += f"Valor total sugerido para venda: R$ {total_sell_value:,.2f}"
+        summary = f"Recommended rebalancing: {', '.join(parts)}. "
+        summary += f"Total suggested sell value: R$ {total_sell_value:,.2f}"
     
     if rebalance_needed:
         warning = (
-            f"[ALERTA] Alocacao em renda variavel ({current_equity_pct:.1f}%) "
-            f"excede limite ({max_equity_pct:.1f}% + {drift_tolerance:.1f}% tolerancia). "
+            f"[ALERT] Equity allocation ({current_equity_pct:.1f}%) "
+            f"exceeds limit ({max_equity_pct:.1f}% + {drift_tolerance:.1f}% tolerance). "
         )
         summary = warning + summary
     

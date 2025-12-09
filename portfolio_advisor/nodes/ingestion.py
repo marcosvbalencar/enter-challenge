@@ -115,7 +115,6 @@ def _validate_portfolio(portfolio: ParsedPortfolio) -> PortfolioValidation:
     """
     Validate portfolio data.
     
-    Replicates Rivet's Code node 6NEs6fO3Mn_ghaakcM0mP:
     - Check if allocation sum is approximately 100% (95-105% tolerance)
     - Check for null/missing values in critical fields
     """

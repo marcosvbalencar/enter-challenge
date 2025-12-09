@@ -77,24 +77,24 @@ class RebalancingRulesConfig(BaseModel):
         threshold=-20.0,
         size_pct=50.0,
         rationale=(
-            "Ativo com perda superior a 20%. "
-            "Recomendacao de venda parcial para protecao do capital."
+            "Asset with loss greater than 20%. "
+            "Partial sell recommendation for capital protection."
         ),
     )
     trim: RebalancingRule = RebalancingRule(
         threshold=25.0,
         size_pct=25.0,
         rationale=(
-            "Ativo com valorizacao expressiva (+25%). "
-            "Recomendacao de realizacao parcial de lucros."
+            "Asset with significant appreciation (+25%). "
+            "Partial profit realization recommendation."
         ),
     )
     soft_sell: RebalancingRule = RebalancingRule(
         threshold=-10.0,
         size_pct=30.0,
         rationale=(
-            "Cenario macro desfavoravel combinado com desempenho negativo. "
-            "Recomendacao de reducao da posicao."
+            "Unfavorable macro scenario combined with negative performance. "
+            "Position reduction recommendation."
         ),
     )
 
@@ -107,17 +107,14 @@ class ComplianceConfig(BaseModel):
     """Compliance rules configuration."""
     
     forbidden_terms: tuple[str, ...] = (
-        "garantido",
-        "garantia",
-        "sem risco",
-        "risco zero",
-        "retorno certo",
-        "retorno garantido",
-        "lucro certo",
-        "investimento seguro",
-        "rentabilidade garantida",
-        "nao ha risco",
-        "livre de risco",
+        "guaranteed",
+        "risk-free",
+        "certain return",
+        "guaranteed profit",
+        "risk-free investment",
+        "guaranteed return",
+        "certain profit",
+        "no risk",
     )
 
 

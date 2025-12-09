@@ -127,40 +127,45 @@ def _format_portfolio_table(
 ) -> str:
     """
     Format a markdown table with all portfolio assets.
-    
-    Columns: Ativo | Valor Atual (R$) | Desempenho (%) | Ação Sugerida
-    
+
+    Columns: Asset | Previous Price | Current Price | Value (BRL) | Performance (%) | Suggested Action
+
     Uses monthly returns from calculated_returns (CSV-based) when available,
     falls back to all-time return_pct from portfolio document.
     """
     # Build lookup maps
     action_map = {a["ticker"]: a["action"] for a in actions}
-    monthly_returns_map = {cr["ticker"]: cr["monthly_return_pct"] for cr in calculated_returns}
-    
+    returns_map = {cr["ticker"]: cr for cr in calculated_returns}
+
     lines = [
-        "| Ativo | Valor Atual (R$) | Desempenho (%) | Ação Sugerida |",
-        "|:------|------------------:|---------------:|:--------------|",
+        "| Asset | Previous Price | Current Price | Value (BRL) | Performance (%) | Suggested Action |",
+        "|:------|---------------:|-------------:|------------:|----------------:|:-----------------|",
     ]
     
     for asset in assets:
         ticker = asset.get("ticker", "N/A")
         value = asset.get("value", 0)
         
-        # Prefer monthly return from CSV, fallback to all-time return from document
-        return_pct = monthly_returns_map.get(ticker)
+        # Get price data and return from calculated_returns
+        calc_data = returns_map.get(ticker, {})
+        last_price = calc_data.get("last_month_price")
+        current_price = calc_data.get("current_price")
+        return_pct = calc_data.get("monthly_return_pct")
+        
+        # Fallback to all-time return from document if no monthly data
         if return_pct is None:
             return_pct = asset.get("return_pct")
         
-        if return_pct is not None:
-            perf_str = f"{return_pct:+.1f}%"
-        else:
-            perf_str = "N/A"
+        # Format price strings
+        last_price_str = f"R$ {last_price:,.2f}" if last_price is not None else "N/A"
+        current_price_str = f"R$ {current_price:,.2f}" if current_price is not None else "N/A"
+        perf_str = f"{return_pct:+.1f}%" if return_pct is not None else "N/A"
         
         action = action_map.get(ticker, "HOLD")
         action_label = _TABLE_ACTION_LABELS.get(action, "Manter")
         
         lines.append(
-            f"| {ticker} | R$ {value:,.2f} | {perf_str} | {action_label} |"
+            f"| {ticker} | {last_price_str} | {current_price_str} | R$ {value:,.2f} | {perf_str} | {action_label} |"
         )
     
     return "\n".join(lines)

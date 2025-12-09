@@ -75,7 +75,7 @@ def main() -> int:
     
     # Export PDF
     pdf_path = export_letter_to_pdf(result["final_letter"])
-    logger.info(f"✅ PDF exported: {pdf_path}")
+    logger.info(f"PDF exported successfully: {pdf_path}")
     
     return 0
 

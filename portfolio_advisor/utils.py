@@ -151,13 +151,9 @@ def normalize_profile_type(profile: str) -> str:
         Normalized profile: "Conservative", "Moderate", or "Aggressive"
     """
     profile_map = {
-        "conservador": "Conservative",
         "conservative": "Conservative",
-        "moderado": "Moderate",
         "moderate": "Moderate",
-        "arrojado": "Aggressive",
-        "agressivo": "Aggressive",
-        "aggressive": "Aggressive",
+        "aggressive": "Aggressive"
     }
     return profile_map.get(profile.lower().strip(), "Moderate")
 
@@ -178,7 +174,7 @@ def normalize_house_view(view: str, macro_text: str = "") -> str:
     if view_clean in ("Bullish", "Bearish", "Neutral"):
         return view_clean
     
-    bearish_indicators = ("patinando", "gelo fino", "preocupa", "risco", "incerteza")
+    bearish_indicators = ("slipping", "thin ice", "worried", "risk", "uncertainty")
     if any(term in macro_text.lower() for term in bearish_indicators):
         return "Bearish"
     

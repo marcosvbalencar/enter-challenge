@@ -257,21 +257,27 @@ def _render_table(pdf: FPDF, rows: list[list[str]]) -> None:
     col_widths = [page_width / num_cols] * num_cols
     
     # Adjust widths for typical financial tables
-    if num_cols == 4:
-        col_widths = [40, 50, 40, 40]  # Ativo, Valor, Desempenho, Acao
+    if num_cols == 6:
+        # Asset, Previous Price, Current Price, Value, Performance, Action
+        col_widths = [22, 28, 28, 32, 26, 34]
+    elif num_cols == 4:
+        col_widths = [40, 50, 40, 40]  # Asset, Value, Performance, Action
     
     # Header row
-    pdf.set_font(AdvisoryPDF.FONT, "B", 9)
+    pdf.set_font(AdvisoryPDF.FONT, "B", 8)
     pdf.set_fill_color(31, 41, 55)
     pdf.set_text_color(255, 255, 255)
     
+    # Right-align numeric columns (indices 1-4 for 6-col table, 1-2 for 4-col)
+    numeric_cols = {1, 2, 3, 4} if num_cols == 6 else {1, 2}
+    
     for j, cell in enumerate(rows[0]):
-        align = "R" if j in (1, 2) else "L"
+        align = "R" if j in numeric_cols else "L"
         pdf.cell(col_widths[j], 8, _clean_markdown_formatting(cell), border=0, align=align, fill=True)
     pdf.ln()
     
     # Data rows
-    pdf.set_font(AdvisoryPDF.FONT, "", 9)
+    pdf.set_font(AdvisoryPDF.FONT, "", 8)
     pdf.set_text_color(31, 41, 55)
     
     for i, row in enumerate(rows[1:]):
@@ -282,7 +288,7 @@ def _render_table(pdf: FPDF, rows: list[list[str]]) -> None:
             pdf.set_fill_color(255, 255, 255)
         
         for j, cell in enumerate(row):
-            align = "R" if j in (1, 2) else "L"
+            align = "R" if j in numeric_cols else "L"
             pdf.cell(col_widths[j], 7, _clean_markdown_formatting(cell), border=0, align=align, fill=True)
         pdf.ln()
     

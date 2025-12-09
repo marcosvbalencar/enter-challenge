@@ -4,8 +4,7 @@ Node A.5: Market Data Processing
 Parses the profitability CSV and calculates monthly returns.
 Cross-references with portfolio assets to get position-weighted returns.
 
-This replicates the Rivet project logic:
-- Code node 4m2DBSh1nKLPG7xue7-Ek: Return calculation
+- Return calculation
 - Cross-references market_data with portfolio_text
 """
 

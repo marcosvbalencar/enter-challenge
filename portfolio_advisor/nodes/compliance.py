@@ -18,9 +18,17 @@ from ..utils import get_text_context
 
 
 _SUSPICIOUS_PATTERNS = (
-    r"recomendamos (comprar|adquirir)",
-    r"aumento de posicao",
-    r"dobrar a aposta",
+    r"we recommend (holding|keeping)",
+    r"guaranteed investment",
+    r"guaranteed return",
+    r"certain profit",
+    r"there are no risks",
+    r"guaranteed earnings",
+    r"assured growth",
+    r"we strongly recommend",
+    r"it's impossible to lose",
+    r"(very|extremely|extraordinary) high return",
+    r"we recommend (betting|risking)",
 )
 
 
@@ -82,9 +90,9 @@ def _check_forbidden_terms(letter: str) -> list[ComplianceIssue]:
             context = get_text_context(letter, term, 30)
             issues.append(ComplianceIssue(
                 issue_type="FORBIDDEN_TERM",
-                description=f"Termo proibido encontrado: '{term}'",
+                description=f"Forbidden term found: '{term}'",
                 original_text=f"...{context}..." if context else None,
-                suggested_fix=f"Remover ou substituir o termo '{term}'",
+                suggested_fix=f"Remove or replace the term '{term}'",
             ))
     
     return issues
@@ -100,9 +108,9 @@ def _check_hallucinations(letter: str, plan: dict) -> list[ComplianceIssue]:
         if match:
             issues.append(ComplianceIssue(
                 issue_type="HALLUCINATION",
-                description="Recomendacao de compra detectada em contexto de rebalanceamento",
+                description="Buy recommendation detected in rebalancing context",
                 original_text=match.group(0),
-                suggested_fix="Remover recomendacoes de compra",
+                suggested_fix="Remove buy recommendations",
             ))
     
     planned_tickers = {
@@ -112,6 +120,7 @@ def _check_hallucinations(letter: str, plan: dict) -> list[ComplianceIssue]:
     }
     
     mentioned_tickers = set(re.findall(r"\b([A-Z]{4}[0-9]{1,2})\b", letter))
+    # Portuguese action words to detect sell recommendations in the letter
     action_words = ("vender", "venda", "reduzir", "realizar", "liquidar")
     
     for ticker in mentioned_tickers:
@@ -120,9 +129,9 @@ def _check_hallucinations(letter: str, plan: dict) -> list[ComplianceIssue]:
             if any(word in context.lower() for word in action_words):
                 issues.append(ComplianceIssue(
                     issue_type="HALLUCINATION",
-                    description=f"Acao sugerida para {ticker} nao esta no plano",
+                    description=f"Suggested action for {ticker} is not in the plan",
                     original_text=context[:100] if context else None,
-                    suggested_fix=f"Remover recomendacao para {ticker}",
+                    suggested_fix=f"Remove recommendation for {ticker}",
                 ))
     
     return issues
@@ -145,11 +154,11 @@ def _rewrite_letter(
     )
     
     actions_summary = "\n".join(
-        f"- {a['ticker']}: {a['action']} - vender {a['size_pct']:.0f}% "
+        f"- {a['ticker']}: {a['action']} - sell {a['size_pct']:.0f}% "
         f"(R$ {a['suggested_sell_value']:,.2f})"
         for a in plan["actions"]
         if a["action"] != "HOLD"
-    ) or "Nenhuma acao de venda recomendada."
+    ) or "No sell actions recommended."
     
     prompt = ChatPromptTemplate.from_messages([
         ("system", COMPLIANCE_REWRITE_SYSTEM),
@@ -173,5 +182,5 @@ def _force_remove_forbidden_terms(letter: str) -> str:
     result = letter
     for term in settings.compliance.forbidden_terms:
         pattern = re.compile(re.escape(term), re.IGNORECASE)
-        result = pattern.sub("[TERMO REMOVIDO]", result)
+        result = pattern.sub("[TERM REMOVED]", result)
     return result

@@ -2,7 +2,7 @@
 LLM prompt templates for the Portfolio Advisory Agent.
 
 All prompts are centralized here for easy maintenance and consistency.
-Prompts follow professional prompt engineering patterns:
+Prompts follow technical prompt engineering patterns:
 - Clear role/task/context separation
 - Explicit output format specifications
 - Constraint prioritization with instruction hierarchy
@@ -11,7 +11,6 @@ Prompts follow professional prompt engineering patterns:
 """
 
 from typing import Final
-
 
 # =============================================================================
 # Node A: Ingestion Prompts
@@ -292,7 +291,6 @@ RISK_EXTRACTION_USER: Final[str] = """<suitability_document>
 
 Extract the client's risk profile parameters following the system instructions."""
 
-
 # =============================================================================
 # Node C: Advisory Drafter Prompts
 # =============================================================================
@@ -322,6 +320,7 @@ The letter MUST follow this exact structure:
 1. HEADER
    - Current date (provided in context)
    - Personalized greeting to the client
+   - Brief introduction (2-3 sentences)
 
 2. PORTFOLIO SUMMARY TABLE
    - Include the PORTFOLIO_TABLE exactly as provided (markdown format)
@@ -391,7 +390,7 @@ Expected Portuguese output:
 ---
 EXAMPLE - Tactical Recommendation:
 
-English context received:
+Context received:
   - Ticker: MGLU3 (Magazine Luiza)
   - Action: HARD_SELL
   - Current value: R$ 8,450.75
@@ -400,7 +399,7 @@ English context received:
   - Rationale: Poor performance + high interest rate exposure
 
 Expected output:
-  "### 1. **MGLU3** (Magazine Luiza) - Urgent Sale
+  "### 1. **MGLU3** (Magazine Luiza) - Selling
 
   - **Current Value**: R$ 8,450.75
   - **Recommended Action**: **Sell** 100% of the position (R$ 8,450.75)

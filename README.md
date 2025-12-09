@@ -21,7 +21,8 @@ START → Ingestion → Market Data → Strategy → Drafter → Compliance → 
 - **LLM-powered extraction**: Uses GPT-4o to parse unstructured portfolio and risk profile documents
 - **Deterministic strategy engine**: Rule-based rebalancing with configurable thresholds
 - **Monthly return calculation**: Processes CSV data for performance-based decisions
-- **Compliance gatekeeper**: Automatically removes forbidden terms and adds regulatory disclaimers
+- **Compliance gatekeeper**: Automatically removes forbidden terms and rewrites non-compliant sections
+- **PDF export**: Generates professionally formatted advisory letters as PDF documents
 - **Type-safe configuration**: Pydantic-based settings management
 
 ## Requirements
@@ -103,6 +104,7 @@ portfolio_advisor/
 ├── models.py         # Data models for LLM extraction
 ├── prompts.py        # System/user prompts for each node
 ├── utils.py          # Helper functions
+├── pdf_export.py     # PDF generation from advisory letter
 ├── nodes/
 │   ├── __init__.py
 │   ├── ingestion.py  # Node A: Parse documents
@@ -115,6 +117,8 @@ portfolio_advisor/
     ├── XP - Albert_s risk profile.txt
     ├── XP - Macro analysis.txt
     └── profitability_calc_wip.csv
+
+output/                   # Generated PDF advisory letters
 ```
 
 ## Workflow Nodes
@@ -143,9 +147,9 @@ Generates personalized advisory letters using LLM with:
 - Portuguese language output
 
 ### Node D: Compliance Gatekeeper
-- Removes forbidden terms ("guaranteed", "risk-free", etc.)
-- Adds regulatory disclaimer
-- Validates against regularoty guidelines
+- Removes forbidden terms ("guaranteed", "risk-free", "certain return", etc.)
+- Validates against CVM regulatory guidelines
+- Rewrites non-compliant sections using LLM
 
 ## Configuration
 
