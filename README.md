@@ -10,7 +10,7 @@ This agent implements a multi-node workflow that:
 2. **Calculates** monthly returns from market price data
 3. **Applies** deterministic rebalancing rules based on performance thresholds
 4. **Drafts** personalized advisory letters in Portuguese
-5. **Validates** compliance with CVM regulations
+5. **Validates** regulatory compliance
 
 ```
 START → Ingestion → Market Data → Strategy → Drafter → Compliance → END
