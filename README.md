@@ -143,9 +143,9 @@ Generates personalized advisory letters using LLM with:
 - Portuguese language output
 
 ### Node D: Compliance Gatekeeper
-- Removes forbidden terms ("garantido", "sem risco", etc.)
+- Removes forbidden terms ("guaranteed", "risk-free", etc.)
 - Adds regulatory disclaimer
-- Validates against CVM guidelines
+- Validates against regularoty guidelines
 
 ## Configuration
 
