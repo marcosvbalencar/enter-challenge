@@ -1,4 +1,4 @@
-# Portfolio Rebalancing & Advisory Agent
+# PoC - AI Financial Advisor
 
 An AI-powered agent built with **LangGraph** that analyzes investment portfolios, applies rebalancing rules based on risk profiles and market conditions, and generates compliance-checked advisory letters.
 
