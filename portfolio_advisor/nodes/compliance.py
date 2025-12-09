@@ -65,7 +65,7 @@ def compliance_gatekeeper(state: AgentState) -> dict:
         corrections_made=len(all_issues),
     )
     
-    final_letter = final_letter.strip() + settings.compliance.disclaimer
+    final_letter = final_letter.strip()
     
     logger.info("Node D: Compliance check complete")
     

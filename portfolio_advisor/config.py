@@ -119,12 +119,7 @@ class ComplianceConfig(BaseModel):
         "nao ha risco",
         "livre de risco",
     )
-    disclaimer: str = """
 
----
-*Esta comunicacao foi revisada pelo sistema de compliance e esta em conformidade com as normas da CVM.
-Investimentos envolvem riscos e podem resultar em perdas. Rentabilidade passada nao e garantia de resultados futuros.*
-"""
 
 
 # =============================================================================

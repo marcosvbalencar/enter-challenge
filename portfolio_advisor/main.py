@@ -22,6 +22,7 @@ def main() -> int:
     
     from .config import settings
     from .graph import app
+    from .pdf_export import export_letter_to_pdf
     from .utils import read_text_file
     
     logger.info("=" * 60)
@@ -71,6 +72,10 @@ def main() -> int:
         return 1
     
     _print_results(result)
+    
+    # Export PDF
+    pdf_path = export_letter_to_pdf(result["final_letter"])
+    logger.info(f"✅ PDF exported: {pdf_path}")
     
     return 0
 
