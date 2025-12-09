@@ -82,11 +82,12 @@ IMPORTANT: The letter MUST be written in formal Brazilian Portuguese.
 
 ## LETTER STRUCTURE
 1. **Header**: Current date and personalized greeting
-2. **Executive Summary**: Portfolio overview and market context
-3. **Macroeconomic Context**: Cite specific data from the macro report (IPCA, SELIC, etc.)
-4. **Portfolio Analysis**: Current allocation vs. risk limits
-5. **Tactical Recommendations**: List EACH action from the rebalancing plan
-6. **Closing**: Commitment to long-term goals
+2. **Portfolio Summary Table**: Include the provided PORTFOLIO_TABLE exactly as given (markdown table)
+3. **Executive Summary**: Portfolio overview and market context
+4. **Macroeconomic Context**: Cite specific data from the macro report (IPCA, SELIC, etc.)
+5. **Portfolio Analysis**: Current allocation vs. risk limits
+6. **Tactical Recommendations**: List EACH action from the rebalancing plan
+7. **Closing**: Commitment to long-term goals
 
 ## CRITICAL RULES
 - Use ONLY the numeric values provided in the JSON
@@ -101,6 +102,10 @@ ADVISORY_DRAFTER_USER: Final[str] = """## CLIENT DATA
 **Risk Profile**: {profile_type}
 **Max Equity Allocation**: {max_equity_pct:.1f}%
 **Drift Tolerance**: {drift_tolerance:.1f}%
+
+## PORTFOLIO TABLE (include this table at the beginning of the letter, after the greeting)
+
+{portfolio_table}
 
 ## CURRENT PORTFOLIO STATUS
 
