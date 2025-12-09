@@ -101,6 +101,7 @@ def _extract_portfolio(llm: ChatOpenAI, portfolio_text: str) -> ParsedPortfolio:
     fixed_income_pct = (fixed_income_value / total_value * 100) if total_value > 0 else 0.0
     
     return ParsedPortfolio(
+        client_name=result.client_name,
         assets=result.assets,
         total_value=total_value,
         equity_value=equity_value,
@@ -182,6 +183,7 @@ def _extract_risk(llm: ChatOpenAI, risk_text: str) -> RiskProfile:
     drift_tolerance = result.drift_tolerance or settings.risk_defaults.drift_tolerance
     
     return RiskProfile(
+        client_name=result.client_name,
         profile_type=profile_type,  # type: ignore[arg-type]
         max_equity_pct=max_equity,
         drift_tolerance=drift_tolerance,

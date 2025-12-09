@@ -54,6 +54,7 @@ class Asset(BaseModel):
 class ParsedPortfolio(BaseModel):
     """Structured representation of the client's portfolio."""
     
+    client_name: str = Field(description="Client's full name extracted from portfolio document")
     assets: list[Asset] = Field(description="List of all assets in the portfolio")
     total_value: float = Field(description="Total portfolio value in BRL")
     equity_value: float = Field(description="Total value in equities (stocks)")
@@ -100,6 +101,7 @@ class MacroContext(BaseModel):
 class RiskProfile(BaseModel):
     """Client's risk profile and investment constraints."""
     
+    client_name: str = Field(description="Client's name from risk profile document")
     profile_type: Literal["Conservative", "Moderate", "Aggressive"] = Field(
         description="Client's risk profile classification"
     )
@@ -193,6 +195,9 @@ class ComplianceReport(BaseModel):
 class PortfolioExtraction(BaseModel):
     """Schema for portfolio extraction from raw text."""
     
+    client_name: str = Field(
+        description="Client's full name extracted from portfolio header"
+    )
     assets: list[Asset] = Field(description="List of assets found in the portfolio")
     total_value: float = Field(
         description="Total portfolio value in BRL (convert from R$ format)"
@@ -219,6 +224,9 @@ class MacroExtraction(BaseModel):
 class RiskExtraction(BaseModel):
     """Schema for risk profile extraction."""
     
+    client_name: str = Field(
+        description="Client's name from risk profile document header"
+    )
     profile_type: str = Field(
         description="Risk profile: Conservative, Moderate, or Aggressive"
     )

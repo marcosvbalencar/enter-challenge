@@ -353,7 +353,6 @@ The letter MUST follow this exact structure:
 
 7. CLOSING
    - Reaffirm commitment to client's long-term objectives
-   - Professional sign-off
 </letter_structure>
 
 <few_shot_examples>
@@ -366,7 +365,7 @@ Context received:
   - Drift detected: 12.3% over limit
 
 Expected output:
-  "Dear Albert,
+  "Dear [Client Name],
 
   Your portfolio totals R$ 285,430.00, with a current allocation of 52.3% in equities.
   Considering your Moderate profile, which sets a maximum limit of 40% in stocks,
@@ -433,7 +432,7 @@ A high-quality letter will:
 
 ADVISORY_DRAFTER_USER: Final[str] = """<context>
 <client_profile>
-- Client Name: 
+- Client Name: {client_name}
 - Risk Profile: {profile_type}
 - Max Equity Allocation: {max_equity_pct:.1f}%
 - Drift Tolerance: {drift_tolerance:.1f}%

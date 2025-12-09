@@ -66,6 +66,7 @@ def advisory_drafter(state: AgentState) -> dict:
     chain = prompt | llm
     
     response = chain.invoke({
+        "client_name": portfolio.get("client_name") or risk.get("client_name", "Cliente"),
         "profile_type": risk["profile_type"],
         "max_equity_pct": risk["max_equity_pct"],
         "drift_tolerance": risk["drift_tolerance"],
